@@ -179,12 +179,14 @@ if st.session_state.step == 1:
 # STEP 2: Selection Grid & Execution Trigger
 elif st.session_state.step == 2:
 
+    st.write(f"### Vælg hvordan diskretionerede værdier skal håndteres:")
+
     # 1. Initialize state key
     if "selected_diskretioneret_option" not in st.session_state:
         st.session_state.selected_diskretioneret_option = None  # Stores 'X', 'Y', or None
 
     # 2. Layout buttons side-by-side
-    col1, col2, _ = st.columns([1, 1, 3])
+    col1, col2, col3, _ = st.columns([1, 1, 1, 2])
 
     with col1:
         type_x = "primary" if st.session_state.selected_diskretioneret_option == "excl" else "secondary"
@@ -198,8 +200,19 @@ elif st.session_state.step == 2:
             st.session_state.selected_diskretioneret_option = "incl"
             st.rerun()
 
+    with col3:
+        with st.popover("Info"):
+            st.markdown("""
+                Danmarks Statistik diskretionere værdier hvis der er mindre end tre overnatningssteder i et område, hvorfor det ikke altid er muligt at se antallet af overnatninger i et område. 
+                Dette er primært et problem for enkeltstående kommuner og ikke for større områder.
+
+                Hvis du skal bruge overnatningstallet for flere kommuner samlet, så vælg "ekskluder områder med diskretionerede værdier". Resultatet viser dig hvilke kommuner som er ekskluderet,
+                så du kan videreformidle det.
+            """
+            )
+
     filter_label = st.session_state.filter_type.capitalize()
-    st.write(f"### Select {filter_label} Data Points")
+    st.subheader(f"Select {filter_label} Data Points")
 
     if st.session_state.filter_type == "municipality":
         options = (sorted(MUNICIPALITY_OPTIONS.keys()))
@@ -232,6 +245,8 @@ elif st.session_state.step == 2:
             for option in options:
                 st.session_state[f"chk_{option}"] = False
             st.rerun()
+
+    error_containter = st.empty()
     
     # st.form keeps the UI responsive while users uncheck multiple items
     with st.form("selection_form"):
@@ -248,13 +263,22 @@ elif st.session_state.step == 2:
                 if col.checkbox(option, value=pre_check_values, key=f"chk_{option}"):
                     selected_names.append(option)
 
+        error_containter_two = st.empty()
+
         col1, col2, _ = st.columns([1, 1, 9])
         with col1:
             if st.form_submit_button("Run Data Collection", type="primary"):
-                st.session_state.selected_names = selected_names
-                st.session_state.selected_codes = [active_dict[name] for name in selected_names]
-                st.session_state.step = 3
-                st.rerun()
+                if st.session_state.get('selected_diskretioneret_option') == None:
+                    error_containter.error('Vælg "Eksluder områder med diskretionerede værdier" eller "Sæt diskretionerede værdier lig med 0" i toppen af siden før du går videre.')
+                    error_containter_two.error('Vælg "Eksluder områder med diskretionerede værdier" eller "Sæt diskretionerede værdier lig med 0" i toppen af siden før du går videre.')
+                elif not selected_names:
+                    error_containter.error('Vælg et eller flere områder før du fortsætter.')
+                    error_containter_two.error('Vælg et eller flere områder før du fortsætter.')
+                else:
+                    st.session_state.selected_names = selected_names
+                    st.session_state.selected_codes = [active_dict[name] for name in selected_names]
+                    st.session_state.step = 3
+                    st.rerun()
         with col2:
             if st.form_submit_button("Go back", type="primary"):
                 st.session_state.step = 1
