@@ -118,6 +118,8 @@ def create_table_one(y1, y2, y3, values, hidden_values):
     df.columns.name = None
     df.index.name = None
 
+    df.rename(columns={'2025' : f'Jan.-{lastest_month_string[:3]}. 2025', '2026' : f'Jan.-{lastest_month_string[:3]}. 2026'}, inplace=True)
+
     sort_nationality = {
         'I alt' : 1,
         'Verden udenfor Danmark' : 2,
@@ -128,4 +130,4 @@ def create_table_one(y1, y2, y3, values, hidden_values):
     df.sort_values(by='nationality_sorting', inplace=True, ascending=True)
     df.drop(columns='nationality_sorting', inplace=True)
 
-    return(df, excluded_areas, len(all_areas), included_areas)
+    return(df, excluded_areas, len(all_areas), lastest_month_string)
