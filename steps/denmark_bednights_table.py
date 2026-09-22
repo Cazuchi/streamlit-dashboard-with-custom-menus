@@ -1,10 +1,10 @@
 import streamlit as st
 from config import YEAR_T, YEAR_T_MINUS_ONE, YEAR_T_MINUS_TWO #type: ignore
-from functions import create_table_one
+from functions import create_table_one #type: ignore
 
 def render_page():
     try:
-        table_one, excluded_cities, num_all_areas_selected, included_areas = create_table_one(
+        table_one, excluded_cities, num_all_areas_selected, lastest_month_string = create_table_one(
             YEAR_T, 
             YEAR_T_MINUS_ONE, 
             YEAR_T_MINUS_TWO, 
@@ -15,8 +15,8 @@ def render_page():
         st.markdown("###### Tabel 1:")
         st.dataframe(
             table_one.style.format({
-            '2025' : '{:,.0f}',
-            '2026' : '{:,.0f}',
+            f'Jan.-{lastest_month_string[:3]}. 2025' : '{:,.0f}',
+            f'Jan.-{lastest_month_string[:3]}. 2026' : '{:,.0f}',
             'Vækst i absolutte tal' : '{:,.0f}',
             'Vækst i pct.' : '{:.1%}'
             },
