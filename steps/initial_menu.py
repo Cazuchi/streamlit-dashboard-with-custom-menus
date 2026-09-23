@@ -11,13 +11,13 @@ def render_page():
             st.rerun()
             
     with col2:
-        if st.button("Overnatninger filtreret på destination", use_container_width=True):
+        if st.button("Overnatninger filtreret på landsdel/region", use_container_width=True):
             st.session_state.filter_type = "destination"
             st.session_state.step = 2
             st.rerun()
 
     with col3:
-        if st.button("Overnatninger filtreret på region", use_container_width=True):
+        if st.button("Overnatninger filtreret på destination", use_container_width=True):
             st.session_state.filter_type = "region"
             st.session_state.step = 2
             st.rerun()
@@ -32,7 +32,7 @@ def render_page():
     'Aalborg' : '851'
     }
 
-    with col1:
+    with col2:
         if st.button("Storbyovernatninger", use_container_width=True):
             st.session_state.filter_type = "storby"
             st.session_state.selected_diskretioneret_option = "excl"
@@ -44,4 +44,24 @@ def render_page():
             st.session_state.selected_names = selected_names
             st.session_state.selected_codes = [active_dict[name] for name in selected_names]
             st.session_state.step = 3
+            st.rerun()
+
+    col1, col2, col3 = st.columns([1, 1, 1])
+
+    with col1:
+        if st.button("Top 10 internationale markeder filtreret på kommune", use_container_width=True):
+            st.session_state.filter_type = "municipality"
+            st.session_state.step = 4
+            st.rerun()
+            
+    with col2:
+        if st.button("Top 10 internationale markeder filtreret på landsdel/region", use_container_width=True):
+            st.session_state.filter_type = "destination"
+            st.session_state.step = 4
+            st.rerun()
+
+    with col3:
+        if st.button("Top 10 internationale markeder filtreret på destination", use_container_width=True):
+            st.session_state.filter_type = "region"
+            st.session_state.step = 4
             st.rerun()

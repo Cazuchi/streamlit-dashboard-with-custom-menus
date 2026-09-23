@@ -1,10 +1,14 @@
 import streamlit as st
-from steps import initial_menu, area_selection_bednights, denmark_bednights_table  #type: ignore
+from steps import initial_menu, area_selection_bednights, denmark_bednights_table, area_selection_top_10_markets, top_10_bednights_table  #type: ignore
 
 STEP_ROUTER = {
+    #Reguler bednights tables for a given area for total, domestic and international bednights
     1: initial_menu.render_page,
     2: area_selection_bednights.render_page,
     3: denmark_bednights_table.render_page,
+    #Top 10 international markets tables
+    4: area_selection_top_10_markets.render_page, #This is essentially just a duplicate of step 2 that reroutes to step 5 instead of step 3. Maybe refactor step 2 later to redirect to step 3/5 depending on some binary variable
+    5: top_10_bednights_table.render_page,
 }
 
 def main():
