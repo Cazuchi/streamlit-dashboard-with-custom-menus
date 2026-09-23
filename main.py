@@ -1,5 +1,5 @@
 import streamlit as st
-from steps import (
+from steps import ( #type: ignore
     initial_menu, 
     area_selection_bednights, 
     denmark_bednights_table, 
@@ -8,7 +8,7 @@ from steps import (
     tourmis_benchmark_table,
     upload_benchmarking_alliance_data,
     benchmarking_alliance_table,
-  )  #type: ignore
+  )
 
 STEP_ROUTER = {
     #Reguler bednights tables for a given area for total, domestic and international bednights
