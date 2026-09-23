@@ -17,6 +17,9 @@ from google.cloud import secretmanager
 from pyjstat import pyjstat
 import streamlit as st
 
+# Custom functions import
+from .function_table_two import create_table_two #type: ignore
+
 @st.cache_data(ttl=86400)
 def prepare_log_in_info() -> tuple[str, str]:
     """
@@ -299,13 +302,7 @@ def clean_data(df, country_translation_dict, market_dict, y1, y2, y3, latest_mon
     city_count = df.groupby(['Market'])['Market'].agg(lambda x: x.count() / 2).to_dict()
 
     df_cph = df.loc[(df['Destinations'] == 'CPH')].copy()
-    df_osl = df.loc[(df['Destinations'] == 'OSL')].copy()
-    df_sto = df.loc[(df['Destinations'] == 'STO')].copy()
-    df_hel = df.loc[(df['Destinations'] == 'HEL')].copy()
     df_others = df.copy()
-
-    df_scandinavia = pd.concat([df_cph, df_osl, df_sto, df_hel])
-    df_scandinavia = df_scandinavia.loc[(df_scandinavia['Market'] == 'ZA') | (df_scandinavia['Market'] == 'ZZ')].copy()
 
     df_others = pd.DataFrame(df_others.groupby(['Market', 'Year'])['Bed nights'].mean())
     df_others.reset_index(inplace=True, drop=False)
@@ -314,7 +311,6 @@ def clean_data(df, country_translation_dict, market_dict, y1, y2, y3, latest_mon
     df = pd.concat([df_cph, df_others])
 
     df = df.pivot(columns=['Destinations', 'Year'], index='Market', values='Bed nights')
-    df_scandinavia = df_scandinavia.pivot(columns=['Destinations', 'Year'], index='Market', values='Bed nights')
 
     sort_markets = {
         'CHINA' : 5,
@@ -331,25 +327,15 @@ def clean_data(df, country_translation_dict, market_dict, y1, y2, y3, latest_mon
         df['CityDNA'] = df[('Average destination', y1)] / df[('Average destination', y2)] - 1
         df = df.sort_values(by=[('Sort markets', ''), ('CPH', y1)], ascending=False)
 
-        df_scandinavia['CPH growth'] = df_scandinavia[('CPH', y1)] / df_scandinavia[('CPH', y2)] - 1
-        df_scandinavia['OSL growth'] = df_scandinavia[('OSL', y1)] / df_scandinavia[('OSL', y2)] - 1
-        df_scandinavia['STO growth'] = df_scandinavia[('STO', y1)] / df_scandinavia[('STO', y2)] - 1
-        df_scandinavia['HEL growth'] = df_scandinavia[('HEL', y1)] / df_scandinavia[('HEL', y2)] - 1
     else:
         df['Copenhagen (NA)'] = df[('CPH', y2)] / df[('CPH', y3)] - 1
         df['CityDNA'] = df[('Average destination', y2)] / df[('Average destination', y3)] - 1
         df = df.sort_values(by=[('Sort markets', ''), ('CPH', y2)], ascending=False)
 
-        df_scandinavia['CPH growth'] = df_scandinavia[('CPH', y2)] / df_scandinavia[('CPH', y3)] - 1
-        df_scandinavia['OSL growth'] = df_scandinavia[('OSL', y2)] / df_scandinavia[('OSL', y3)] - 1
-        df_scandinavia['STO growth'] = df_scandinavia[('STO', y2)] / df_scandinavia[('STO', y3)] - 1
-        df_scandinavia['HEL growth'] = df_scandinavia[('HEL', y2)] / df_scandinavia[('HEL', y3)] - 1
-
     df['Antal byer'] = df.index.map(city_count)
 
     market_dict = {value : key for key, value in market_dict.items()}
     df.index = df.index.map(market_dict)
-    df_scandinavia.index = df_scandinavia.index.map(market_dict)
 
     country_translation_dict = {value : key for key, value in country_translation_dict.items()}
     country_translation_dict.update({
@@ -361,34 +347,22 @@ def clean_data(df, country_translation_dict, market_dict, y1, y2, y3, latest_mon
     })
 
     df.index = df.index.map(country_translation_dict)
-    df_scandinavia.index = df_scandinavia.index.map(country_translation_dict)
 
     df = df[[('Copenhagen (NA)', ''), ('CityDNA', ''), ('Antal byer', '')]]
-    df_scandinavia = df_scandinavia[[('CPH growth', ''), ('OSL growth', ''), ('STO growth', ''), ('HEL growth', '')]]
 
     df.columns = df.columns.get_level_values(0)
-    df_scandinavia.columns = df_scandinavia.columns.get_level_values(0)
     df.columns.name = None
-    df_scandinavia.columns.name = None
     df.index.name = None
-    df_scandinavia.index.name = None
 
-    df_scandinavia.rename(columns={
-    'CPH growth' : 'Copenhagen pct. growth',
-    'OSL growth' : 'Oslo pct. growth',
-    'STO growth' : 'Stockholm pct. growth',
-    'HEL growth' : 'Helsinki pct. growth'
-    },
-    inplace=True)
-
-    return(df, df_scandinavia)
+    return(df)
 
 #@st.cache_data(ttl=3600)
-def create_tourmis_table(y1, y2, y3, country_list_for_tourmis, country_translation_dict, latest_month, latest_year):
+def create_tourmis_table(y1, y2, y3, values, hidden_values):
+    *_, country_list_for_tourmis, country_translation_dict, latest_month, latest_year = create_table_two(y1, y2, y3, values, hidden_values)
     username, password = prepare_log_in_info()
     market_dict = build_market_dict(username, password)
     city_dict = build_city_dict(username, password)
     country_string = modify_country_list_for_tourmis(country_list_for_tourmis, market_dict)
     raw_df = collect_main_data(city_dict, username, password, y1, y2, y3, country_string)
-    clean_df, df_scandinavia = clean_data(raw_df, country_translation_dict, market_dict, y1, y2, y3, latest_month, latest_year)
-    return(clean_df, df_scandinavia)
+    clean_df = clean_data(raw_df, country_translation_dict, market_dict, y1, y2, y3, latest_month, latest_year)
+    return(clean_df)

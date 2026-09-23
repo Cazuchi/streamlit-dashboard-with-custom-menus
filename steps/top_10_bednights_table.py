@@ -12,7 +12,7 @@ def render_page():
             st.session_state.selected_diskretioneret_option
             )
 
-        st.markdown("###### Tabel 1:")
+        st.markdown("###### Top 10 internationale markeder:")
         st.dataframe(
             table_one.style.format({
             f'Jan.-{lastest_month_string[:3]}. 2025' : '{:,.0f}',

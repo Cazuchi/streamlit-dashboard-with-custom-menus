@@ -1,7 +1,9 @@
 import streamlit as st
 
 def render_page():
-    st.write("### Vælg data:")
+    st.write("## Vælg hvilken data du ønsker at set")
+    st.divider()
+    st.write("##### Samlede, danske og internationale overnatninger vs. forrige periode:")
     col1, col2, col3 = st.columns(3)
     
     with col1:
@@ -46,6 +48,8 @@ def render_page():
             st.session_state.step = 3
             st.rerun()
 
+    st.divider()
+    st.write("##### Top 10 internationale markeder vs. forrige periode:")
     col1, col2, col3 = st.columns([1, 1, 1])
 
     with col1:
@@ -64,4 +68,19 @@ def render_page():
         if st.button("Top 10 internationale markeder filtreret på destination", use_container_width=True):
             st.session_state.filter_type = "region"
             st.session_state.step = 4
+            st.rerun()
+
+    st.divider()
+    col1, col2, col3 = st.columns([1, 1, 1])
+            
+    with col1:
+        st.write("##### TourMIS benchmark:")
+        if st.button("København benchmark vs. andre Europæiske byer (TourMIS)", use_container_width=True):
+            st.session_state.step = 6
+            st.rerun()
+
+    with col2:
+        st.write("##### Benchmarking Alliance:")
+        if st.button("Hotelbelægning per dag for de seneste 365 dage", use_container_width=True):
+            st.session_state.step = 7
             st.rerun()
