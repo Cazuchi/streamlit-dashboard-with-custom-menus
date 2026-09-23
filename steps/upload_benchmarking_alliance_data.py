@@ -12,3 +12,7 @@ def render_page():
         st.success("Data uploaded.")
         st.session_state.step = 8
         st.rerun()
+
+    if st.button("**Tilbage til hovedmenuen**"):
+            st.session_state.step = 1
+            st.rerun()

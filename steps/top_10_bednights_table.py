@@ -64,6 +64,6 @@ def render_page():
         Tryk på nulstil filtre og vælg "Sæt diskretionerede værdier lig med 0" i menuen for udvælgelse af områder. Hvis denne besked stadig vises, er ingen overnatningstal tilgængelige for området. Dette gælder bl.a. for Furesø Kommune.
         """)
 
-    if st.button("Nulstil filtre"):
+    if st.button("**Tilbage til hovedmenuen**"):
         st.session_state.step = 1
         st.rerun()

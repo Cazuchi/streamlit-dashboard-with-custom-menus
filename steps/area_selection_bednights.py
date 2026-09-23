@@ -225,7 +225,7 @@ def render_page():
 
         col1, col2, _ = st.columns([1, 1, 9])
         with col1:
-            if st.form_submit_button("Run Data Collection", type="primary"):
+            if st.form_submit_button("**Run Data Collection**", type="primary"):
                 if st.session_state.get('selected_diskretioneret_option') == None:
                     error_containter.error('Vælg "Eksluder områder med diskretionerede værdier" eller "Sæt diskretionerede værdier lig med 0" i toppen af siden før du går videre.')
                     error_containter_two.error('Vælg "Eksluder områder med diskretionerede værdier" eller "Sæt diskretionerede værdier lig med 0" i toppen af siden før du går videre.')
@@ -238,6 +238,6 @@ def render_page():
                     st.session_state.step = 3
                     st.rerun()
         with col2:
-            if st.form_submit_button("Go back", type="primary"):
+            if st.form_submit_button("**Tilbage til hovedmenuen**", type="primary"):
                 st.session_state.step = 1
                 st.rerun()

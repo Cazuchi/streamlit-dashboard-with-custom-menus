@@ -6,3 +6,7 @@ def render_page():
 
     st.write(f'**Hotelbelægning i København By per dag per måned fra {min_date} til {max_date}:**')
     st.table(styled_df, width='content')
+
+    if st.button("**Tilbage til hovedmenuen**"):
+        st.session_state.step = 1
+        st.rerun()

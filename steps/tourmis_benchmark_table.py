@@ -84,6 +84,6 @@ def render_page():
         height='content',
     )
 
-    if st.button("Nulstil filtre"):
+    if st.button("**Tilbage til hovedmenuen**"):
         st.session_state.step = 1
         st.rerun()
