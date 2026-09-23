@@ -188,4 +188,4 @@ def create_table_two(y1, y2, y3, values, hidden_values):
 
     country_list_for_tourmis = df.index.map(country_translation_dict).to_list()
 
-    return(df, excluded_areas, len(all_areas), lastest_month_string, country_list_for_tourmis, country_translation_dict)
+    return(df, excluded_areas, len(all_areas), lastest_month_string, included_areas, country_list_for_tourmis, country_translation_dict)

@@ -4,7 +4,7 @@ from functions import create_table_two #type: ignore
 
 def render_page():
     try:
-        table_one, excluded_cities, num_all_areas_selected, lastest_month_string, *_ = create_table_two(
+        table_one, excluded_cities, num_all_areas_selected, lastest_month_string, included_areas, *_ = create_table_two(
             YEAR_T, 
             YEAR_T_MINUS_ONE, 
             YEAR_T_MINUS_TWO, 
@@ -38,9 +38,17 @@ def render_page():
                 
             return f"{sep.join(items[:-1])}{last_sep}{items[-1]}"
 
+        area_text = '**Følgende områder er inkluderet i ovenstående tal:**'
+        area_text_body = join_with_custom_last(included_areas)
+        st.write(f"""
+            {area_text}
+
+            {area_text_body}
+        """)
+
         table_one_description_header = f'**Følgende områder er udeladt af summen grundet manglende eller diskretionerede overnatningstal ({f'svarende til {len(excluded_cities)} ud af {num_all_areas_selected} valgte områder'}):**'
         table_one_description_body = join_with_custom_last(excluded_cities)
-        if len(excluded_cities) > 1:
+        if len(excluded_cities) >= 1:
             st.write(f"""
             {table_one_description_header}
 

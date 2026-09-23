@@ -130,4 +130,4 @@ def create_table_one(y1, y2, y3, values, hidden_values):
     df.sort_values(by='nationality_sorting', inplace=True, ascending=True)
     df.drop(columns='nationality_sorting', inplace=True)
 
-    return(df, excluded_areas, len(all_areas), lastest_month_string)
+    return(df, excluded_areas, len(all_areas), lastest_month_string, included_areas)
