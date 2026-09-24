@@ -84,3 +84,8 @@ def render_page():
         if st.button("Hotelbelægning per dag for de seneste 365 dage", use_container_width=True):
             st.session_state.step = 7
             st.rerun()
+    with col3:
+        st.write("##### TØBBE tal:")
+        if st.button("Udvikling i turismeomsætning, jobs og skatteprovenue", use_container_width=True):
+            st.session_state.step = 9
+            st.rerun()

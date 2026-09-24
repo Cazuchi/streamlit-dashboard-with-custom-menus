@@ -8,10 +8,12 @@ from steps import ( #type: ignore
     tourmis_benchmark_table,
     upload_benchmarking_alliance_data,
     benchmarking_alliance_table,
+    area_selection_tøbbe,
+    tøbbe_table,
   )
 
 STEP_ROUTER = {
-    #Reguler bednights tables for a given area for total, domestic and international bednights
+    #Regular bednights tables for a given area for total, domestic and international bednights
     1: initial_menu.render_page,
     2: area_selection_bednights.render_page,
     3: denmark_bednights_table.render_page,
@@ -23,6 +25,9 @@ STEP_ROUTER = {
     #Benchmarking Alliance table
     7: upload_benchmarking_alliance_data.render_page,
     8: benchmarking_alliance_table.render_page,
+    #TØBBE table
+    9: area_selection_tøbbe.render_page,
+    10: tøbbe_table.render_page,
 }
 
 def main():
