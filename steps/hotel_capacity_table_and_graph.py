@@ -7,11 +7,11 @@ def render_page():
     melted_df_hotelkapacitet = create_styled_capacity_table(melted_df_hotelkapacitet)
     melted_df_belægning = create_styled_occupancy_table(melted_df_belægning)
 
-    st.write('#### Scatterplot: Hotelkapacitet og belægningsgrad over tid:')
+    st.write('#### Scatterplot - Hotelkapacitet og belægningsgrad over tid:')
     st.plotly_chart(hotel_capacity_graph)
-    st.write('#### Scatterplot: Belægningsgrader på hoteller per måned per år:')
+    st.write('#### Belægningsgrader på hoteller per måned per år:')
     st.table(melted_df_belægning, width='content')
-    st.write('#### Scatterplot: Hotelkapacitet (værelser) per måned per år:')
+    st.write('#### Hotelkapacitet (værelser) per måned per år:')
     st.table(melted_df_hotelkapacitet, width='content')
 
     def join_with_custom_last(iterable, sep=', ', last_sep=' og '):
