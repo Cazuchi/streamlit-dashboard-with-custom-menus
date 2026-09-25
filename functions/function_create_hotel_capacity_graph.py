@@ -63,7 +63,7 @@ def create_hotel_capacity_graph(df):
 
     fig.update_traces(
         marker=dict(
-            size=12,
+            size=14,
             line=dict(width=1, color='black')  # <-- Adds a thin black border
         ))
 

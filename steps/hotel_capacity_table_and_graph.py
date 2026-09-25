@@ -9,7 +9,7 @@ def render_page():
 
     st.write('#### Scatterplot - Hotelkapacitet og belægningsgrad over tid:')
     st.plotly_chart(hotel_capacity_graph)
-    st.write('#### Belægningsgrader på hoteller per måned per år:')
+    st.write('#### Belægningsgrad på hoteller per måned per år:')
     st.table(melted_df_belægning, width='content')
     st.write('#### Hotelkapacitet (værelser) per måned per år:')
     st.table(melted_df_hotelkapacitet, width='content')
