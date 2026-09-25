@@ -10,6 +10,8 @@ from steps import ( #type: ignore
     benchmarking_alliance_table,
     area_selection_tøbbe,
     tøbbe_table,
+    area_selection_hotel_capacity,
+    hotel_capacity_table_and_graph,
   )
 
 STEP_ROUTER = {
@@ -28,6 +30,9 @@ STEP_ROUTER = {
     #TØBBE table
     9: area_selection_tøbbe.render_page,
     10: tøbbe_table.render_page,
+    #Hotel capacity and occupancy graph and tables
+    11: area_selection_hotel_capacity.render_page,
+    12: hotel_capacity_table_and_graph.render_page,
 }
 
 def main():

@@ -89,3 +89,12 @@ def render_page():
         if st.button("Udvikling i turismeomsætning, jobs og skatteprovenue", use_container_width=True):
             st.session_state.step = 9
             st.rerun()
+
+    st.divider()
+    col1, col2, col3 = st.columns([1, 1, 1])
+
+    with col1:
+        st.write("##### Hotelkapacitet og belægningsgrad - Danmarks Statistik:")
+        if st.button("Hotelkapacitet og belægningsgrad per måned fra 2017 og til nu", use_container_width=True):
+            st.session_state.step = 11
+            st.rerun()
